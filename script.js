@@ -1,12 +1,28 @@
 const container = document.querySelector('.container');
 const center = document.querySelector('.center');
 
-center.textContent = 'Click Inside To Start Game';
+const blueCorner = document.querySelector('.blue');
+const redCorner = document.querySelector('.red');
+const yellowCorner = document.querySelector('.yellow');
+const greenCorner = document.querySelector('.green');
+
+
+const blueCoords = blueCorner.getBoundingClientRect();
+const redCoords = redCorner.getBoundingClientRect();
+const yellowCoords = yellowCorner.getBoundingClientRect();
+const greenCoords = greenCorner.getBoundingClientRect();
+
 
 center.addEventListener('click', (e) => {
     center.textContent = ''
 
-    const ploplo =  createNewElement('div', center, 'test');
+    const movableSquare =  createNewElement('div', container, 'test');
+
+    
+    const ploploPlot = ploplo.getBoundingClientRect()
+    if(blueCoordinate.x === ploploPlot.x) {
+        ploplo.style.backgroundColor = 'blue'
+    }
 
     ploplo.style.left = '100px';
     ploplo.style.top = '100px';
@@ -16,7 +32,7 @@ center.addEventListener('click', (e) => {
 
     ploplo.addEventListener('keydown', (e) => {
         e.preventDefault();
-        console.log(e.key);
+        // console.log(e.key);
 
         let left = parseInt(ploplo.style.left) || 0;
         let top = parseInt(ploplo.style.top) || 0
