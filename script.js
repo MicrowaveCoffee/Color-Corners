@@ -18,35 +18,38 @@ center.addEventListener('click', (e) => {
 
     const movableSquare =  createNewElement('div', container, 'test');
 
+    const centerCoords = center.getBoundingClientRect();
+    movableSquare.style.left = `${centerCoords.width/2 - 25 + centerCoords.left}px`;
+    movableSquare.style.top = `${centerCoords.height/2 -25 + centerCoords.top}px`;
     
-    const ploploPlot = ploplo.getBoundingClientRect()
-    if(blueCoordinate.x === ploploPlot.x) {
-        ploplo.style.backgroundColor = 'blue'
-    }
+    movableSquare.setAttribute('tabindex', '0');
+    movableSquare.focus();
 
-    ploplo.style.left = '100px';
-    ploplo.style.top = '100px';
-
-    ploplo.setAttribute('tabindex', '0');
-    ploplo.focus();
-
-    ploplo.addEventListener('keydown', (e) => {
+    movableSquare.addEventListener('keydown', (e) => {
         e.preventDefault();
-        // console.log(e.key);
+        
 
-        let left = parseInt(ploplo.style.left) || 0;
-        let top = parseInt(ploplo.style.top) || 0
+        let left = parseInt(movableSquare.style.left) || 0;
+        let top = parseInt(movableSquare.style.top) || 0;
+        const step = 10;
 
         if(e.key === 'ArrowLeft') {
-            ploplo.style.left = `${left - 10}px`;
+            movableSquare.style.left = `${left - 10}px`;
         
        }else if (e.key === 'ArrowRight') {
-            ploplo.style.left = `${left + 10}px`;
+            movableSquare.style.left = `${left + 10}px`;
        }else if (e.key === 'ArrowUp') {
-            ploplo.style.top = `${top - 10}px`;
+            movableSquare.style.top = `${top - 10}px`;
         } else if (e.key === 'ArrowDown') {
-            ploplo.style.top = `${top + 10}px`;
+            movableSquare.style.top = `${top + 10}px`;
         }
+
+        const squareCoords = movableSquare.getBoundingClientRect();
+
+        checkCornerCollision(squareCoords, blueCoords, 'blue', movableSquare);
+        checkCornerCollision(squareCoords, redCoords, 'red', movableSquare);
+        checkCornerCollision(squareCoords, greenCoords, 'green', movableSquare);
+        checkCornerCollision(squareCoords, yellowCoords, 'yellow', movableSquare);
     });
 });
 
@@ -56,4 +59,19 @@ function createNewElement(type, parent, className) {
     parent.append(element);
     element.classList.add(className)
     return element
+}
+
+function checkCornerCollision(squareCoords, cornerCoords, color, square) {
+    if (isOverlapping(squareCoords, cornerCoords)) {
+        square.style.backgroundColor = color;
+    }
+}
+
+function isOverlapping(rect1, rect2) {
+    return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+    );
 }
